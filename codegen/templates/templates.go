@@ -283,6 +283,7 @@ func Call(p *types.Func) string {
 }
 
 func ToGo(name string) string {
+	name = resolveInternalName(name)
 	if name == "_" {
 		return "_"
 	}
@@ -437,6 +438,19 @@ func sanitizeKeywords(name string) string {
 		if name == k {
 			return name + "Arg"
 		}
+	}
+	return name
+}
+
+var internalNames = map[string]string{
+	"_Entity":  "FederatedEntity",
+	"_Service": "FederatedService",
+}
+
+// resolveInternalName resolves a name to an internal name, or returns the original name if not defined as internal
+func resolveInternalName(name string) string {
+	if internalName, found := internalNames[name]; found {
+		return internalName
 	}
 	return name
 }
