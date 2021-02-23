@@ -180,9 +180,11 @@ func (e *Entity) allFieldsAreExternal() bool {
 }
 
 func (f *federation) GenerateCode(data *codegen.Data) error {
-	fmt.Println("Schema Objects:")
-	for _, o := range data.Objects {
-		fmt.Printf("  %+v\n", *o)
+	if serviceType := data.Objects.ByName("_Service"); serviceType != nil {
+		fmt.Printf("_Service :: %+v\n", *serviceType)
+	}
+	if entityType := data.Objects.ByName("_Entity"); entityType != nil {
+		fmt.Printf("_Entity :: %+v\n", *entityType)
 	}
 
 	if len(f.Entities) > 0 {
